@@ -52,7 +52,7 @@
                             <i class="fas fa-chalkboard-teacher text-success me-2"></i>Teachers
                         </h5>
                         <p class="card-text">Manage teacher records and assignments</p>
-                        <a href="#" class="btn btn-success">View Teachers</a>
+                        <a href="{{ route('teachers.index') }}" class="btn btn-success">View Teachers</a>
                     </div>
                 </div>
             </div>

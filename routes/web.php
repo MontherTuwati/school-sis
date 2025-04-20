@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -63,6 +64,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('students', StudentController::class);
     Route::get('/students/count', [StudentController::class, 'count'])->name('students.count');
     Route::get('/students/grid', [StudentController::class, 'grid'])->name('students.grid');
+    
+    // Teacher Routes
+    Route::resource('teachers', TeacherController::class);
+    Route::get('/teachers/grid', [TeacherController::class, 'grid'])->name('teachers.grid');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();
