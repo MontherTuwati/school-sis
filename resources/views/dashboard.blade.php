@@ -88,7 +88,7 @@
                             <i class="fas fa-building text-secondary me-2"></i>Departments
                         </h5>
                         <p class="card-text">Manage academic departments</p>
-                        <a href="#" class="btn btn-secondary">View Departments</a>
+                        <a href="{{ route('departments.index') }}" class="btn btn-secondary">View Departments</a>
                     </div>
                 </div>
             </div>
