@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\CourseController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -72,6 +73,9 @@ Route::middleware('auth')->group(function () {
     
     // Department Routes
     Route::resource('departments', DepartmentController::class);
+    
+    // Course Routes
+    Route::resource('courses', CourseController::class);
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();

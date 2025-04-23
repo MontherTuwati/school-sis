@@ -63,7 +63,7 @@
                             <i class="fas fa-book text-warning me-2"></i>Courses
                         </h5>
                         <p class="card-text">Manage course offerings and schedules</p>
-                        <a href="#" class="btn btn-warning">View Courses</a>
+                        <a href="{{ route('courses.index') }}" class="btn btn-warning">View Courses</a>
                     </div>
                 </div>
             </div>
