@@ -7,6 +7,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\SubjectController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -76,6 +77,9 @@ Route::middleware('auth')->group(function () {
     
     // Course Routes
     Route::resource('courses', CourseController::class);
+    
+    // Subject Routes
+    Route::resource('subjects', SubjectController::class);
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();
