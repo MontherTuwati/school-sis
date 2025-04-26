@@ -99,7 +99,7 @@
                             <i class="fas fa-calendar-alt text-danger me-2"></i>Events
                         </h5>
                         <p class="card-text">Manage school events and activities</p>
-                        <a href="#" class="btn btn-danger">View Events</a>
+                        <a href="{{ route('events.index') }}" class="btn btn-danger">View Events</a>
                     </div>
                 </div>
             </div>

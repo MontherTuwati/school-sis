@@ -8,6 +8,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\EventController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -80,6 +81,10 @@ Route::middleware('auth')->group(function () {
     
     // Subject Routes
     Route::resource('subjects', SubjectController::class);
+    
+    // Event Routes
+    Route::resource('events', EventController::class);
+    Route::get('/events/calendar', [EventController::class, 'calendar'])->name('events.calendar');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();
