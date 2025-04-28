@@ -9,6 +9,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\UserManagementController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -85,6 +86,11 @@ Route::middleware('auth')->group(function () {
     // Event Routes
     Route::resource('events', EventController::class);
     Route::get('/events/calendar', [EventController::class, 'calendar'])->name('events.calendar');
+    
+    // User Management Routes
+    Route::resource('usermanagement', UserManagementController::class);
+    Route::post('/usermanagement/{id}/change-password', [UserManagementController::class, 'changePassword'])->name('usermanagement.change-password');
+    Route::post('/usermanagement/{id}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('usermanagement.toggle-status');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();
