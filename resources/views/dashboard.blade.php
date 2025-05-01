@@ -74,7 +74,7 @@
                             <i class="fas fa-chart-line text-info me-2"></i>Grades
                         </h5>
                         <p class="card-text">Manage student grades and transcripts</p>
-                        <a href="#" class="btn btn-info">View Grades</a>
+                        <a href="{{ route('grades.index') }}" class="btn btn-info">View Grades</a>
                     </div>
                 </div>
             </div>

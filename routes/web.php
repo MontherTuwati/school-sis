@@ -10,6 +10,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\GradeController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -91,6 +92,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('usermanagement', UserManagementController::class);
     Route::post('/usermanagement/{id}/change-password', [UserManagementController::class, 'changePassword'])->name('usermanagement.change-password');
     Route::post('/usermanagement/{id}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('usermanagement.toggle-status');
+    
+    // Grade Routes
+    Route::resource('grades', GradeController::class);
+    Route::get('/grades/transcript/{student_id}', [GradeController::class, 'transcript'])->name('grades.transcript');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();
