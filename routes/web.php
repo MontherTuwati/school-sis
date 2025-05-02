@@ -11,6 +11,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\GraduateController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -96,6 +97,12 @@ Route::middleware('auth')->group(function () {
     // Grade Routes
     Route::resource('grades', GradeController::class);
     Route::get('/grades/transcript/{student_id}', [GradeController::class, 'transcript'])->name('grades.transcript');
+    
+    // Graduate Routes
+    Route::resource('graduates', GraduateController::class);
+    Route::get('/graduates/grid', [GraduateController::class, 'grid'])->name('graduates.grid');
+    Route::get('/graduates/alumni', [GraduateController::class, 'alumni'])->name('graduates.alumni');
+    Route::get('/graduates/statistics', [GraduateController::class, 'statistics'])->name('graduates.statistics');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();

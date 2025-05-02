@@ -110,7 +110,7 @@
                             <i class="fas fa-user-graduate text-dark me-2"></i>Graduates
                         </h5>
                         <p class="card-text">Manage graduated student records</p>
-                        <a href="#" class="btn btn-dark">View Graduates</a>
+                        <a href="{{ route('graduates.index') }}" class="btn btn-dark">View Graduates</a>
                     </div>
                 </div>
             </div>
