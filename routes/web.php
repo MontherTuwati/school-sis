@@ -12,6 +12,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\GraduateController;
+use App\Http\Controllers\SettingController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -103,6 +104,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/graduates/grid', [GraduateController::class, 'grid'])->name('graduates.grid');
     Route::get('/graduates/alumni', [GraduateController::class, 'alumni'])->name('graduates.alumni');
     Route::get('/graduates/statistics', [GraduateController::class, 'statistics'])->name('graduates.statistics');
+    
+    // Settings Routes
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('/settings/general', [SettingController::class, 'general'])->name('settings.general');
+    Route::post('/settings/general', [SettingController::class, 'updateGeneral'])->name('settings.general.update');
+    Route::get('/settings/academic', [SettingController::class, 'academic'])->name('settings.academic');
+    Route::post('/settings/academic', [SettingController::class, 'updateAcademic'])->name('settings.academic.update');
+    Route::get('/settings/email', [SettingController::class, 'email'])->name('settings.email');
+    Route::post('/settings/email', [SettingController::class, 'updateEmail'])->name('settings.email.update');
+    Route::get('/settings/system', [SettingController::class, 'system'])->name('settings.system');
+    Route::post('/settings/system', [SettingController::class, 'updateSystem'])->name('settings.system.update');
+    Route::get('/settings/backup', [SettingController::class, 'backup'])->name('settings.backup');
+    Route::post('/settings/restore', [SettingController::class, 'restore'])->name('settings.restore');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();

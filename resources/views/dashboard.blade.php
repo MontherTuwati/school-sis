@@ -121,7 +121,7 @@
                             <i class="fas fa-cog text-muted me-2"></i>Settings
                         </h5>
                         <p class="card-text">System configuration and settings</p>
-                        <a href="#" class="btn btn-outline-secondary">Settings</a>
+                        <a href="{{ route('settings.index') }}" class="btn btn-outline-secondary">Settings</a>
                     </div>
                 </div>
             </div>
