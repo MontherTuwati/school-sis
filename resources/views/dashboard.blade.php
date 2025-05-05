@@ -118,6 +118,20 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
+                            <i class="fas fa-chart-bar text-info me-2"></i>Reports
+                        </h5>
+                        <p class="card-text">Analytics and reporting dashboard</p>
+                        <a href="{{ route('reports.index') }}" class="btn btn-info">View Reports</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
                             <i class="fas fa-cog text-muted me-2"></i>Settings
                         </h5>
                         <p class="card-text">System configuration and settings</p>

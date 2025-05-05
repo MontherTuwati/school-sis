@@ -13,6 +13,7 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\GraduateController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ReportController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -117,6 +118,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings/system', [SettingController::class, 'updateSystem'])->name('settings.system.update');
     Route::get('/settings/backup', [SettingController::class, 'backup'])->name('settings.backup');
     Route::post('/settings/restore', [SettingController::class, 'restore'])->name('settings.restore');
+    
+    // Report Routes
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/students', [ReportController::class, 'students'])->name('reports.students');
+    Route::get('/reports/teachers', [ReportController::class, 'teachers'])->name('reports.teachers');
+    Route::get('/reports/academic', [ReportController::class, 'academic'])->name('reports.academic');
+    Route::get('/reports/financial', [ReportController::class, 'financial'])->name('reports.financial');
+    Route::get('/reports/attendance', [ReportController::class, 'attendance'])->name('reports.attendance');
+    Route::get('/reports/graduates', [ReportController::class, 'graduates'])->name('reports.graduates');
+    Route::get('/reports/export', [ReportController::class, 'export'])->name('reports.export');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();
