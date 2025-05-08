@@ -118,6 +118,20 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
+                            <i class="fas fa-clipboard-check text-success me-2"></i>Attendance
+                        </h5>
+                        <p class="card-text">Track student attendance</p>
+                        <a href="{{ route('attendance.index') }}" class="btn btn-success">View Attendance</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
                             <i class="fas fa-chart-bar text-info me-2"></i>Reports
                         </h5>
                         <p class="card-text">Analytics and reporting dashboard</p>
@@ -125,9 +139,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row mt-4">
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">

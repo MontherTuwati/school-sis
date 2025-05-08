@@ -14,6 +14,7 @@ use App\Http\Controllers\GradeController;
 use App\Http\Controllers\GraduateController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\AttendanceController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -128,6 +129,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/attendance', [ReportController::class, 'attendance'])->name('reports.attendance');
     Route::get('/reports/graduates', [ReportController::class, 'graduates'])->name('reports.graduates');
     Route::get('/reports/export', [ReportController::class, 'export'])->name('reports.export');
+    
+    // Attendance Routes
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/attendance/take', [AttendanceController::class, 'take'])->name('attendance.take');
+    Route::post('/attendance/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.get-students');
+    Route::post('/attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::get('/attendance/view', [AttendanceController::class, 'view'])->name('attendance.view');
+    Route::get('/attendance/{id}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
+    Route::put('/attendance/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
+    Route::delete('/attendance/{id}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
+    Route::get('/attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
+    Route::get('/attendance/export', [AttendanceController::class, 'export'])->name('attendance.export');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();
