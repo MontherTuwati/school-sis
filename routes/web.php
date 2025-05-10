@@ -15,6 +15,7 @@ use App\Http\Controllers\GraduateController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\LibraryController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -141,6 +142,24 @@ Route::middleware('auth')->group(function () {
     Route::delete('/attendance/{id}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
     Route::get('/attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
     Route::get('/attendance/export', [AttendanceController::class, 'export'])->name('attendance.export');
+    
+    // Library Routes
+    Route::get('/library', [LibraryController::class, 'index'])->name('library.index');
+    Route::get('/library/books', [LibraryController::class, 'books'])->name('library.books');
+    Route::get('/library/books/create', [LibraryController::class, 'create'])->name('library.create');
+    Route::post('/library/books', [LibraryController::class, 'store'])->name('library.store');
+    Route::get('/library/books/{id}/edit', [LibraryController::class, 'edit'])->name('library.edit');
+    Route::put('/library/books/{id}', [LibraryController::class, 'update'])->name('library.update');
+    Route::delete('/library/books/{id}', [LibraryController::class, 'destroy'])->name('library.destroy');
+    Route::get('/library/borrow', [LibraryController::class, 'borrow'])->name('library.borrow');
+    Route::post('/library/borrow', [LibraryController::class, 'processBorrow'])->name('library.process-borrow');
+    Route::get('/library/return/{id}', [LibraryController::class, 'return'])->name('library.return');
+    Route::put('/library/return/{id}', [LibraryController::class, 'processReturn'])->name('library.process-return');
+    Route::get('/library/borrowings', [LibraryController::class, 'borrowings'])->name('library.borrowings');
+    Route::get('/library/categories', [LibraryController::class, 'categories'])->name('library.categories');
+    Route::post('/library/categories', [LibraryController::class, 'storeCategory'])->name('library.store-category');
+    Route::get('/library/reports', [LibraryController::class, 'reports'])->name('library.reports');
+    Route::get('/library/export', [LibraryController::class, 'export'])->name('library.export');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();

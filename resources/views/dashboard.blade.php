@@ -132,6 +132,17 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
+                            <i class="fas fa-books text-primary me-2"></i>Library
+                        </h5>
+                        <p class="card-text">Manage books and borrowing</p>
+                        <a href="{{ route('library.index') }}" class="btn btn-primary">View Library</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
                             <i class="fas fa-chart-bar text-info me-2"></i>Reports
                         </h5>
                         <p class="card-text">Analytics and reporting dashboard</p>
