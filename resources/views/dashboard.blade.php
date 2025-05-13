@@ -143,6 +143,17 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
+                            <i class="fas fa-dollar-sign text-success me-2"></i>Financial
+                        </h5>
+                        <p class="card-text">Manage fees and payments</p>
+                        <a href="{{ route('financial.index') }}" class="btn btn-success">View Financial</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
                             <i class="fas fa-chart-bar text-info me-2"></i>Reports
                         </h5>
                         <p class="card-text">Analytics and reporting dashboard</p>

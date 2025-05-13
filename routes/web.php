@@ -16,6 +16,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\FinancialController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -160,6 +161,25 @@ Route::middleware('auth')->group(function () {
     Route::post('/library/categories', [LibraryController::class, 'storeCategory'])->name('library.store-category');
     Route::get('/library/reports', [LibraryController::class, 'reports'])->name('library.reports');
     Route::get('/library/export', [LibraryController::class, 'export'])->name('library.export');
+    
+    // Financial Routes
+    Route::get('/financial', [FinancialController::class, 'index'])->name('financial.index');
+    Route::get('/financial/fees', [FinancialController::class, 'fees'])->name('financial.fees');
+    Route::get('/financial/fees/create', [FinancialController::class, 'createFee'])->name('financial.create-fee');
+    Route::post('/financial/fees', [FinancialController::class, 'storeFee'])->name('financial.store-fee');
+    Route::get('/financial/fees/{id}/edit', [FinancialController::class, 'editFee'])->name('financial.edit-fee');
+    Route::put('/financial/fees/{id}', [FinancialController::class, 'updateFee'])->name('financial.update-fee');
+    Route::delete('/financial/fees/{id}', [FinancialController::class, 'destroyFee'])->name('financial.destroy-fee');
+    Route::get('/financial/payments', [FinancialController::class, 'payments'])->name('financial.payments');
+    Route::get('/financial/payments/record', [FinancialController::class, 'recordPayment'])->name('financial.record-payment');
+    Route::post('/financial/payments', [FinancialController::class, 'storePayment'])->name('financial.store-payment');
+    Route::get('/financial/scholarships', [FinancialController::class, 'scholarships'])->name('financial.scholarships');
+    Route::get('/financial/scholarships/create', [FinancialController::class, 'createScholarship'])->name('financial.create-scholarship');
+    Route::post('/financial/scholarships', [FinancialController::class, 'storeScholarship'])->name('financial.store-scholarship');
+    Route::get('/financial/categories', [FinancialController::class, 'categories'])->name('financial.categories');
+    Route::post('/financial/categories', [FinancialController::class, 'storeCategory'])->name('financial.store-category');
+    Route::get('/financial/reports', [FinancialController::class, 'reports'])->name('financial.reports');
+    Route::get('/financial/export', [FinancialController::class, 'export'])->name('financial.export');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();
