@@ -17,6 +17,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\FinancialController;
+use App\Http\Controllers\CommunicationController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -180,6 +181,26 @@ Route::middleware('auth')->group(function () {
     Route::post('/financial/categories', [FinancialController::class, 'storeCategory'])->name('financial.store-category');
     Route::get('/financial/reports', [FinancialController::class, 'reports'])->name('financial.reports');
     Route::get('/financial/export', [FinancialController::class, 'export'])->name('financial.export');
+    
+    // Communication Routes
+    Route::get('/communication', [CommunicationController::class, 'index'])->name('communication.index');
+    Route::get('/communication/messages', [CommunicationController::class, 'messages'])->name('communication.messages');
+    Route::get('/communication/compose', [CommunicationController::class, 'compose'])->name('communication.compose');
+    Route::post('/communication/send', [CommunicationController::class, 'sendMessage'])->name('communication.send-message');
+    Route::get('/communication/message/{id}', [CommunicationController::class, 'viewMessage'])->name('communication.view-message');
+    Route::post('/communication/reply/{id}', [CommunicationController::class, 'reply'])->name('communication.reply');
+    Route::delete('/communication/message/{id}', [CommunicationController::class, 'deleteMessage'])->name('communication.delete-message');
+    Route::get('/communication/announcements', [CommunicationController::class, 'announcements'])->name('communication.announcements');
+    Route::get('/communication/announcements/create', [CommunicationController::class, 'createAnnouncement'])->name('communication.create-announcement');
+    Route::post('/communication/announcements', [CommunicationController::class, 'storeAnnouncement'])->name('communication.store-announcement');
+    Route::get('/communication/announcements/{id}/edit', [CommunicationController::class, 'editAnnouncement'])->name('communication.edit-announcement');
+    Route::put('/communication/announcements/{id}', [CommunicationController::class, 'updateAnnouncement'])->name('communication.update-announcement');
+    Route::delete('/communication/announcements/{id}', [CommunicationController::class, 'deleteAnnouncement'])->name('communication.delete-announcement');
+    Route::get('/communication/notifications', [CommunicationController::class, 'notifications'])->name('communication.notifications');
+    Route::post('/communication/notifications/{id}/read', [CommunicationController::class, 'markAsRead'])->name('communication.mark-as-read');
+    Route::post('/communication/notifications/read-all', [CommunicationController::class, 'markAllAsRead'])->name('communication.mark-all-read');
+    Route::get('/communication/reports', [CommunicationController::class, 'reports'])->name('communication.reports');
+    Route::get('/communication/export', [CommunicationController::class, 'export'])->name('communication.export');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();

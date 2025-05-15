@@ -154,13 +154,27 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <i class="fas fa-chart-bar text-info me-2"></i>Reports
+                            <i class="fas fa-comments text-info me-2"></i>Communication
                         </h5>
-                        <p class="card-text">Analytics and reporting dashboard</p>
-                        <a href="{{ route('reports.index') }}" class="btn btn-info">View Reports</a>
+                        <p class="card-text">Manage messages and announcements</p>
+                        <a href="{{ route('communication.index') }}" class="btn btn-info">View Communication</a>
                     </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-chart-bar text-warning me-2"></i>Reports
+                        </h5>
+                        <p class="card-text">Analytics and reporting dashboard</p>
+                        <a href="{{ route('reports.index') }}" class="btn btn-warning">View Reports</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
