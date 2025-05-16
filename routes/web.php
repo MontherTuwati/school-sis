@@ -18,6 +18,8 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\CommunicationController;
+use App\Http\Controllers\TimetableController;
+use App\Http\Controllers\ExaminationController;
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -201,6 +203,45 @@ Route::middleware('auth')->group(function () {
     Route::post('/communication/notifications/read-all', [CommunicationController::class, 'markAllAsRead'])->name('communication.mark-all-read');
     Route::get('/communication/reports', [CommunicationController::class, 'reports'])->name('communication.reports');
     Route::get('/communication/export', [CommunicationController::class, 'export'])->name('communication.export');
+    
+    // Timetable Routes
+    Route::get('/timetable', [TimetableController::class, 'index'])->name('timetable.index');
+    Route::get('/timetable/timetables', [TimetableController::class, 'timetables'])->name('timetable.timetables');
+    Route::get('/timetable/create', [TimetableController::class, 'create'])->name('timetable.create');
+    Route::post('/timetable', [TimetableController::class, 'store'])->name('timetable.store');
+    Route::get('/timetable/{id}/edit', [TimetableController::class, 'edit'])->name('timetable.edit');
+    Route::put('/timetable/{id}', [TimetableController::class, 'update'])->name('timetable.update');
+    Route::delete('/timetable/{id}', [TimetableController::class, 'destroy'])->name('timetable.destroy');
+    Route::get('/timetable/{id}/view', [TimetableController::class, 'view'])->name('timetable.view');
+    Route::get('/timetable/weekly', [TimetableController::class, 'weekly'])->name('timetable.weekly');
+    Route::get('/timetable/teacher/{teacherId?}', [TimetableController::class, 'teacherTimetable'])->name('timetable.teacher');
+    Route::get('/timetable/student/{studentId?}', [TimetableController::class, 'studentTimetable'])->name('timetable.student');
+    Route::get('/timetable/classrooms', [TimetableController::class, 'classrooms'])->name('timetable.classrooms');
+    Route::post('/timetable/classrooms', [TimetableController::class, 'storeClassroom'])->name('timetable.store-classroom');
+    Route::get('/timetable/reports', [TimetableController::class, 'reports'])->name('timetable.reports');
+    Route::get('/timetable/export', [TimetableController::class, 'export'])->name('timetable.export');
+    
+    // Examination Routes
+    Route::get('/examination', [ExaminationController::class, 'index'])->name('examination.index');
+    Route::get('/examination/examinations', [ExaminationController::class, 'examinations'])->name('examination.examinations');
+    Route::get('/examination/create', [ExaminationController::class, 'create'])->name('examination.create');
+    Route::post('/examination', [ExaminationController::class, 'store'])->name('examination.store');
+    Route::get('/examination/{id}/edit', [ExaminationController::class, 'edit'])->name('examination.edit');
+    Route::put('/examination/{id}', [ExaminationController::class, 'update'])->name('examination.update');
+    Route::delete('/examination/{id}', [ExaminationController::class, 'destroy'])->name('examination.destroy');
+    Route::get('/examination/{id}/view', [ExaminationController::class, 'view'])->name('examination.view');
+    Route::get('/examination/schedules', [ExaminationController::class, 'schedules'])->name('examination.schedules');
+    Route::get('/examination/schedules/create', [ExaminationController::class, 'createSchedule'])->name('examination.create-schedule');
+    Route::post('/examination/schedules', [ExaminationController::class, 'storeSchedule'])->name('examination.store-schedule');
+    Route::get('/examination/results', [ExaminationController::class, 'results'])->name('examination.results');
+    Route::get('/examination/results/create', [ExaminationController::class, 'createResult'])->name('examination.create-result');
+    Route::post('/examination/results', [ExaminationController::class, 'storeResult'])->name('examination.store-result');
+    Route::get('/examination/results/{id}/edit', [ExaminationController::class, 'editResult'])->name('examination.edit-result');
+    Route::put('/examination/results/{id}', [ExaminationController::class, 'updateResult'])->name('examination.update-result');
+    Route::delete('/examination/results/{id}', [ExaminationController::class, 'deleteResult'])->name('examination.delete-result');
+    Route::get('/examination/student-results/{studentId?}', [ExaminationController::class, 'studentResults'])->name('examination.student-results');
+    Route::get('/examination/reports', [ExaminationController::class, 'reports'])->name('examination.reports');
+    Route::get('/examination/export', [ExaminationController::class, 'export'])->name('examination.export');
     
     Route::post('/logout', function (Request $request) {
         Auth::logout();

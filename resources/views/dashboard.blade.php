@@ -165,6 +165,31 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
+                            <i class="fas fa-calendar-alt text-warning me-2"></i>Timetable
+                        </h5>
+                        <p class="card-text">Manage class schedules and timetables</p>
+                        <a href="{{ route('timetable.index') }}" class="btn btn-warning">View Timetable</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-file-alt text-danger me-2"></i>Examinations
+                        </h5>
+                        <p class="card-text">Manage exams and results</p>
+                        <a href="{{ route('examination.index') }}" class="btn btn-danger">View Examinations</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
                             <i class="fas fa-chart-bar text-warning me-2"></i>Reports
                         </h5>
                         <p class="card-text">Analytics and reporting dashboard</p>
@@ -172,9 +197,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row mt-4">
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
