@@ -4,36 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Hash;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Teacher;
-use App\Models\Department;
+use Brian2694\Toastr\Facades\Toastr;
 
 class TeacherController extends Controller
 {
-    /** teacher list */
-    public function index()
-    {
-        $teachers = Teacher::with(['user', 'department'])->get();
-        return view('teacher.index', compact('teachers'));
-    }
-
-    /** teacher grid view */
-    public function grid()
-    {
-        $teachers = Teacher::with(['user', 'department'])->get();
-        return view('teacher.grid', compact('teachers'));
-    }
-
     /** add teacher page */
-    public function create()
+    public function teacherAdd()
     {
-        $users = User::where('role', 'teacher')->get();
-        $departments = Department::all();
-        return view('teacher.create', compact('users', 'departments'));
+        $users = User::where('role','Teachers')->get();
+        return view('teacher.add-teacher',compact('users'));
+    }
+
+    /** teacher list */
+    public function teacherList()
+    {
+        $listTeacher = Teacher::join('users', 'teachers.teacher_id','users.user_id')->select('users.date_of_birth','users.join_date','users.phone_number','teachers.*')->get();
+        return view('teacher.list-teachers',compact('listTeacher'));
+    }
+
+    /** teacher Grid */
+    public function teacherGrid()
+    {
+        $teacherGrid = Teacher::all();
+        return view('teacher.teachers-grid',compact('teacherGrid'));
     }
 
     /** save record */
-    public function store(Request $request)
+    public function saveRecord(Request $request)
     {
         $request->validate([
             'full_name'     => 'required|string',
@@ -45,105 +46,91 @@ class TeacherController extends Controller
             'state'         => 'required|string',
             'zip_code'      => 'required|string',
             'country'       => 'required|string',
-            'department_id' => 'required|exists:departments,id',
         ]);
 
-        DB::beginTransaction();
         try {
-            $teacher = new Teacher;
-            $teacher->full_name     = $request->full_name;
-            $teacher->user_id       = $request->user_id;
-            $teacher->gender        = $request->gender;
-            $teacher->experience    = $request->experience;
-            $teacher->department_id = $request->department_id;
-            $teacher->qualification = $request->qualification;
-            $teacher->address       = $request->address;
-            $teacher->city          = $request->city;
-            $teacher->state         = $request->state;
-            $teacher->zip_code      = $request->zip_code;
-            $teacher->country       = $request->country;
-            $teacher->save();
+
+            $saveRecord = new Teacher;
+            $saveRecord->full_name     = $request->full_name;
+            $saveRecord->teacher_id    = $request->teacher_id;
+            $saveRecord->gender        = $request->gender;
+            $saveRecord->experience    = $request->experience;
+            $saveRecord->department_id = $request->department_id;
+            $saveRecord->qualification = $request->qualification;
+            $saveRecord->address       = $request->address;
+            $saveRecord->city          = $request->city;
+            $saveRecord->state         = $request->state;
+            $saveRecord->zip_code      = $request->zip_code;
+            $saveRecord->country       = $request->country;
+            $saveRecord->save();
    
-            DB::commit();
-            return redirect()->route('teachers.index')->with('success', 'Teacher added successfully!');
+            Toastr::success('Has been add successfully :)','Success');
+            return redirect()->back();
         } catch(\Exception $e) {
+            \Log::info($e);
             DB::rollback();
-            \Log::error('Failed to add teacher: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to add teacher. Please try again.');
+            Toastr::error('fail, Add new record  :)','Error');
+            return redirect()->back();
         }
     }
 
     /** edit record */
-    public function edit($id)
+    public function editRecord($user_id)
     {
-        $teacher = Teacher::with(['user', 'department'])->findOrFail($id);
-        $users = User::where('role', 'teacher')->get();
-        $departments = Department::all();
-        return view('teacher.edit', compact('teacher', 'users', 'departments'));
+        $teacher = Teacher::join('users', 'teachers.user_id','users.user_id')
+                    ->select('users.date_of_birth','users.join_date','users.phone_number','teachers.*')
+                    ->where('users.user_id', $user_id)->first();
+        return view('teacher.edit-teacher',compact('teacher'));
     }
 
     /** update record teacher */
-    public function update(Request $request, $id)
+    public function updateRecordTeacher(Request $request)
     {
-        $request->validate([
-            'full_name'     => 'required|string',
-            'gender'        => 'required|string',
-            'experience'    => 'required|string',
-            'qualification' => 'required|string',
-            'address'       => 'required|string',
-            'city'          => 'required|string',
-            'state'         => 'required|string',
-            'zip_code'      => 'required|string',
-            'country'       => 'required|string',
-            'department_id' => 'required|exists:departments,id',
-        ]);
-
         DB::beginTransaction();
         try {
-            $teacher = Teacher::findOrFail($id);
-            $teacher->full_name     = $request->full_name;
-            $teacher->user_id       = $request->user_id;
-            $teacher->gender        = $request->gender;
-            $teacher->experience    = $request->experience;
-            $teacher->department_id = $request->department_id;
-            $teacher->qualification = $request->qualification;
-            $teacher->address       = $request->address;
-            $teacher->city          = $request->city;
-            $teacher->state         = $request->state;
-            $teacher->zip_code      = $request->zip_code;
-            $teacher->country       = $request->country;
-            $teacher->save();
 
+            $updateRecord = [
+                'full_name'     => $request->full_name,
+                'gender'        => $request->gender,
+                'date_of_birth' => $request->date_of_birth,
+                'mobile'        => $request->mobile,
+                'joining_date'  => $request->joining_date,
+                'qualification' => $request->qualification,
+                'experience'    => $request->experience,
+                'username'      => $request->username,
+                'address'       => $request->address,
+                'city'          => $request->city,
+                'state'         => $request->state,
+                'zip_code'      => $request->zip_code,
+                'country'      => $request->country,
+            ];
+            Teacher::where('id',$request->id)->update($updateRecord);
+            
+            Toastr::success('Has been update successfully :)','Success');
             DB::commit();
-            return redirect()->route('teachers.index')->with('success', 'Teacher updated successfully!');
+            return redirect()->back();
+           
         } catch(\Exception $e) {
             DB::rollback();
-            \Log::error('Failed to update teacher: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to update teacher. Please try again.');
+            Toastr::error('fail, update record  :)','Error');
+            return redirect()->back();
         }
     }
 
     /** delete record */
-    public function destroy($id)
+    public function teacherDelete(Request $request)
     {
         DB::beginTransaction();
         try {
-            $teacher = Teacher::findOrFail($id);
-            $teacher->delete();
-            
+
+            Teacher::destroy($request->id);
             DB::commit();
-            return redirect()->route('teachers.index')->with('success', 'Teacher deleted successfully!');
+            Toastr::success('Deleted record successfully :)','Success');
+            return redirect()->back();
         } catch(\Exception $e) {
             DB::rollback();
-            \Log::error('Failed to delete teacher: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to delete teacher. Please try again.');
+            Toastr::error('Deleted record fail :)','Error');
+            return redirect()->back();
         }
-    }
-
-    /** view teacher details */
-    public function show($id)
-    {
-        $teacher = Teacher::with(['user', 'department'])->findOrFail($id);
-        return view('teacher.show', compact('teacher'));
     }
 }
