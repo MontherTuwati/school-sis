@@ -5,132 +5,97 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\Course;
-use App\Models\Department;
-use App\Models\Teacher;
+
+use Brian2694\Toastr\Facades\Toastr;
 
 class CourseController extends Controller
 {
-    /** course list */
-    public function index()
+    /** index page */
+    public function courseList()
     {
-        $courses = Course::with(['department', 'teacher'])->get();
-        return view('course.index', compact('courses'));
+        $courseList = Course::all();
+        return view('courses.course_list',compact('courseList'));
     }
 
     /** Course add */
-    public function create()
+    public function courseAdd()
     {
-        $departments = Department::all();
-        $teachers = Teacher::all();
-        return view('course.create', compact('departments', 'teachers'));
+        return view('courses.course_add');
     }
 
     /** save record */
-    public function store(Request $request)
+    public function saveRecord(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:courses',
+            'title'       => 'required|string',
             'description' => 'required|string',
-            'credits' => 'required|integer|min:1|max:10',
-            'department_id' => 'required|exists:departments,id',
-            'teacher_id' => 'nullable|exists:teachers,id',
-            'semester' => 'required|string|max:20',
-            'academic_year' => 'required|string|max:10',
         ]);
         
         DB::beginTransaction();
         try {
-            $course = new Course;
-            $course->title = $request->title;
-            $course->code = $request->code;
-            $course->description = $request->description;
-            $course->credits = $request->credits;
-            $course->department_id = $request->department_id;
-            $course->teacher_id = $request->teacher_id;
-            $course->semester = $request->semester;
-            $course->academic_year = $request->academic_year;
-            $course->is_active = $request->has('is_active');
-            $course->save();
+                $saveRecord = new Course;
+                $saveRecord->title          = $request->title;
+                $saveRecord->description    = $request->description;
+                $saveRecord->save();
 
-            DB::commit();
-            return redirect()->route('courses.index')->with('success', 'Course added successfully!');
+                Toastr::success('Has been add successfully :)','Success');
+                DB::commit();
+            return redirect()->back();
             
         } catch(\Exception $e) {
+            \Log::info($e);
             DB::rollback();
-            \Log::error('Failed to add course: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to add course. Please try again.');
+            Toastr::error('fail, Add new record:)','Error');
+            return redirect()->back();
         }
     }
 
     /** Course edit view */
-    public function edit($id)
+    public function courseEdit($course_code)
     {
-        $course = Course::findOrFail($id);
-        $departments = Department::all();
-        $teachers = Teacher::all();
-        return view('course.edit', compact('course', 'departments', 'teachers'));
+        $courseEdit = Course::where('course_code',$course_code)->first();
+        return view('courses.course_edit',compact('courseEdit'));
     }
 
     /** update record */
-    public function update(Request $request, $id)
+    public function updateRecord(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:courses,code,' . $id,
-            'description' => 'required|string',
-            'credits' => 'required|integer|min:1|max:10',
-            'department_id' => 'required|exists:departments,id',
-            'teacher_id' => 'nullable|exists:teachers,id',
-            'semester' => 'required|string|max:20',
-            'academic_year' => 'required|string|max:10',
-        ]);
-
         DB::beginTransaction();
         try {
-            $course = Course::findOrFail($id);
-            $course->title = $request->title;
-            $course->code = $request->code;
-            $course->description = $request->description;
-            $course->credits = $request->credits;
-            $course->department_id = $request->department_id;
-            $course->teacher_id = $request->teacher_id;
-            $course->semester = $request->semester;
-            $course->academic_year = $request->academic_year;
-            $course->is_active = $request->has('is_active');
-            $course->save();
+            
+            $updateRecord = [
+                'title'             => $request->title,
+                'description'       => $request->description,
+            ];
 
+            Course::where('course_code',$request->course_code)->update($updateRecord);
+            Toastr::success('Has been update successfully :)','Success');
             DB::commit();
-            return redirect()->route('courses.index')->with('success', 'Course updated successfully!');
+            return redirect()->back();
            
         } catch(\Exception $e) {
+            \Log::info($e);
             DB::rollback();
-            \Log::error('Failed to update course: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to update course. Please try again.');
+            Toastr::error('Fail, update record:)','Error');
+            return redirect()->back();
         }
     }
 
     /** delete record */
-    public function destroy($id)
+    public function deleteRecord(Request $request)
     {
         DB::beginTransaction();
         try {
-            $course = Course::findOrFail($id);
-            $course->delete();
-            
+
+            Course::where('course_code',$request->course_code)->delete();
             DB::commit();
-            return redirect()->route('courses.index')->with('success', 'Course deleted successfully!');
+            Toastr::success('Deleted record successfully :)','Success');
+            return redirect()->back();
         } catch(\Exception $e) {
             DB::rollback();
-            \Log::error('Failed to delete course: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to delete course. Please try again.');
+            Toastr::error('Deleted record fail :)','Error');
+            return redirect()->back();
         }
     }
 
-    /** view course details */
-    public function show($id)
-    {
-        $course = Course::with(['department', 'teacher'])->findOrFail($id);
-        return view('course.show', compact('course'));
-    }
 }

@@ -5,125 +5,97 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\Subject;
-use App\Models\Department;
+
+use Brian2694\Toastr\Facades\Toastr;
 
 class SubjectController extends Controller
 {
-    /** subject list */
-    public function index()
+    /** index page */
+    public function subjectList()
     {
-        $subjects = Subject::with('department')->get();
-        return view('subject.index', compact('subjects'));
+        $subjectList = Subject::all();
+        return view('subjects.subject_list',compact('subjectList'));
     }
 
     /** subject add */
-    public function create()
+    public function subjectAdd()
     {
-        $departments = Department::all();
-        return view('subject.create', compact('departments'));
+        return view('subjects.subject_add');
     }
 
     /** save record */
-    public function store(Request $request)
+    public function saveRecord(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:subjects',
-            'description' => 'nullable|string',
-            'credits' => 'required|integer|min:1|max:10',
-            'department_id' => 'required|exists:departments,id',
-            'semester' => 'required|string|max:20',
-            'academic_year' => 'required|string|max:10',
+            'subject_name' => 'required|string',
+            'class'        => 'required|string',
         ]);
         
         DB::beginTransaction();
         try {
-            $subject = new Subject;
-            $subject->name = $request->name;
-            $subject->code = $request->code;
-            $subject->description = $request->description;
-            $subject->credits = $request->credits;
-            $subject->department_id = $request->department_id;
-            $subject->semester = $request->semester;
-            $subject->academic_year = $request->academic_year;
-            $subject->is_active = $request->has('is_active');
-            $subject->save();
+                $saveRecord = new Subject;
+                $saveRecord->subject_name   = $request->subject_name;
+                $saveRecord->class          = $request->class;
+                $saveRecord->save();
 
-            DB::commit();
-            return redirect()->route('subjects.index')->with('success', 'Subject added successfully!');
+                Toastr::success('Has been add successfully :)','Success');
+                DB::commit();
+            return redirect()->back();
            
         } catch(\Exception $e) {
+            \Log::info($e);
             DB::rollback();
-            \Log::error('Failed to add subject: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to add subject. Please try again.');
+            Toastr::error('fail, Add new record:)','Error');
+            return redirect()->back();
         }
     }
 
     /** subject edit view */
-    public function edit($id)
+    public function subjectEdit($subject_id)
     {
-        $subject = Subject::findOrFail($id);
-        $departments = Department::all();
-        return view('subject.edit', compact('subject', 'departments'));
+        $subjectEdit = Subject::where('subject_id',$subject_id)->first();
+        return view('subjects.subject_edit',compact('subjectEdit'));
     }
 
     /** update record */
-    public function update(Request $request, $id)
+    public function updateRecord(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:subjects,code,' . $id,
-            'description' => 'nullable|string',
-            'credits' => 'required|integer|min:1|max:10',
-            'department_id' => 'required|exists:departments,id',
-            'semester' => 'required|string|max:20',
-            'academic_year' => 'required|string|max:10',
-        ]);
-
         DB::beginTransaction();
         try {
-            $subject = Subject::findOrFail($id);
-            $subject->name = $request->name;
-            $subject->code = $request->code;
-            $subject->description = $request->description;
-            $subject->credits = $request->credits;
-            $subject->department_id = $request->department_id;
-            $subject->semester = $request->semester;
-            $subject->academic_year = $request->academic_year;
-            $subject->is_active = $request->has('is_active');
-            $subject->save();
+            
+            $updateRecord = [
+                'subject_name' => $request->subject_name,
+                'class'        => $request->class,
+            ];
 
+            Subject::where('subject_id',$request->subject_id)->update($updateRecord);
+            Toastr::success('Has been update successfully :)','Success');
             DB::commit();
-            return redirect()->route('subjects.index')->with('success', 'Subject updated successfully!');
+            return redirect()->back();
            
         } catch(\Exception $e) {
+            \Log::info($e);
             DB::rollback();
-            \Log::error('Failed to update subject: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to update subject. Please try again.');
+            Toastr::error('Fail, update record:)','Error');
+            return redirect()->back();
         }
     }
 
     /** delete record */
-    public function destroy($id)
+    public function deleteRecord(Request $request)
     {
         DB::beginTransaction();
         try {
-            $subject = Subject::findOrFail($id);
-            $subject->delete();
-            
+
+            Subject::where('subject_id',$request->subject_id)->delete();
             DB::commit();
-            return redirect()->route('subjects.index')->with('success', 'Subject deleted successfully!');
+            Toastr::success('Deleted record successfully :)','Success');
+            return redirect()->back();
         } catch(\Exception $e) {
             DB::rollback();
-            \Log::error('Failed to delete subject: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to delete subject. Please try again.');
+            Toastr::error('Deleted record fail :)','Error');
+            return redirect()->back();
         }
     }
 
-    /** view subject details */
-    public function show($id)
-    {
-        $subject = Subject::with('department')->findOrFail($id);
-        return view('subject.show', compact('subject'));
-    }
 }
