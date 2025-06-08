@@ -1,0 +1,216 @@
+
+@extends('layouts.master')
+@section('content')
+{{-- message --}}
+{!! Toastr::message() !!}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-sub-header">
+                        <h3 class="page-title">Welcome {{ Session::get('name') }}!</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                            <li class="breadcrumb-item active">{{ Session::get('name') }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-4 col-sm-6 col-12 d-flex">
+                <div class="card bg-comman w-100">
+                    <div class="card-body">
+                        <div class="db-widgets d-flex justify-content-between align-items-center">
+                            <div class="db-info">
+                                <h6>Students</h6>
+                                <h3>50+</h3>
+                            </div>
+                            <div class="db-icon">
+                                <img src="{{ URL::to('assets/img/icons/dash-icon-01.svg') }}" alt="Dashboard Icon">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-6 col-12 d-flex">
+                <div class="card bg-comman w-100">
+                    <div class="card-body">
+                        <div class="db-widgets d-flex justify-content-between align-items-center">
+                            <div class="db-info">
+                                <h6>Graduates</h6>
+                                <h3>50+</h3>
+                            </div>
+                            <div class="db-icon">
+                                <img src="{{ URL::to('assets/img/icons/dash-icon-02.svg') }}" alt="Dashboard Icon">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-6 col-12 d-flex">
+                <div class="card bg-comman w-100">
+                    <div class="card-body">
+                        <div class="db-widgets d-flex justify-content-between align-items-center">
+                            <div class="db-info">
+                                <h6>Department</h6>
+                                <h3>23</h3>
+                            </div>
+                            <div class="db-icon">
+                                <img src="{{ URL::to('assets/img/icons/dash-icon-03.svg') }}" alt="Dashboard Icon">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-12 col-xl-8">
+                <div class="card card-chart">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <h5 class="card-title">Overview</h5>
+                            </div>
+                            <div class="col-6">
+                                <ul class="chart-list-out">
+                                    <li><span class="circle-blue"></span>Teacher</li>
+                                    <li><span class="circle-green"></span>Student</li>
+                                    <li class="star-menus"><a href="javascript:;"><i
+                                                class="fas fa-ellipsis-v"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="apexcharts-area"></div>
+                    </div>
+                </div>
+                <div class="card card-chart">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <h5 class="card-title">Number of Students</h5>
+                            </div>
+                            <div class="col-6">
+                                <ul class="chart-list-out">
+                                    <li><span class="circle-blue"></span>Girls</li>
+                                    <li><span class="circle-green"></span>Boys</li>
+                                    <li class="star-menus"><a href="javascript:;"><i
+                                                class="fas fa-ellipsis-v"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="bar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-12 col-xl-4 d-flex">
+                    <div class="card flex-fill comman-shadow">
+                        <div class="card-body">
+                            <div id="calendar-doctor" class="calendar-container"></div>
+                            <div class="calendar-info calendar-info1">
+                                <div class="up-come-header">
+                                    <h2>Upcoming Events</h2>
+                                    <span><a href="javascript:;"><i class="feather-plus"></i></a></span>
+                                </div>
+                                <div class="upcome-event-date">
+                                    <h3>10 Jan</h3>
+                                    <span><i class="fas fa-ellipsis-h"></i></span>
+                                </div>
+                                <div class="calendar-details">
+                                    <p>08:00 am</p>
+                                    <div class="calendar-box normal-bg">
+                                        <div class="calandar-event-name">
+                                            <h4>Botony</h4>
+                                            <h5>Lorem ipsum sit amet</h5>
+                                        </div>
+                                        <span>08:00 - 09:00 am</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-details">
+                                    <p>09:00 am</p>
+                                    <div class="calendar-box normal-bg">
+                                        <div class="calandar-event-name">
+                                            <h4>Botony</h4>
+                                            <h5>Lorem ipsum sit amet</h5>
+                                        </div>
+                                        <span>09:00 - 10:00 am</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-details">
+                                    <p>10:00 am</p>
+                                    <div class="calendar-box normal-bg">
+                                        <div class="calandar-event-name">
+                                            <h4>Botony</h4>
+                                            <h5>Lorem ipsum sit amet</h5>
+                                        </div>
+                                        <span>10:00 - 11:00 am</span>
+                                    </div>
+                                </div>
+                                <div class="upcome-event-date">
+                                    <h3>10 Jan</h3>
+                                    <span><i class="fas fa-ellipsis-h"></i></span>
+                                </div>
+                                <div class="calendar-details">
+                                    <p>08:00 am</p>
+                                    <div class="calendar-box normal-bg">
+                                        <div class="calandar-event-name">
+                                            <h4>English</h4>
+                                            <h5>Lorem ipsum sit amet</h5>
+                                        </div>
+                                        <span>08:00 - 09:00 am</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-details">
+                                    <p>09:00 am</p>
+                                    <div class="calendar-box normal-bg">
+                                        <div class="calandar-event-name">
+                                            <h4>Mathematics </h4>
+                                            <h5>Lorem ipsum sit amet</h5>
+                                        </div>
+                                        <span>09:00 - 10:00 am</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-details">
+                                    <p>10:00 am</p>
+                                    <div class="calendar-box normal-bg">
+                                        <div class="calandar-event-name">
+                                            <h4>History</h4>
+                                            <h5>Lorem ipsum sit amet</h5>
+                                        </div>
+                                        <span>10:00 - 11:00 am</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-details">
+                                    <p>11:00 am</p>
+                                    <div class="calendar-box break-bg">
+                                        <div class="calandar-event-name">
+                                            <h4>Break</h4>
+                                            <h5>Lorem ipsum sit amet</h5>
+                                        </div>
+                                        <span>11:00 - 12:00 am</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-details">
+                                    <p>11:30 am</p>
+                                    <div class="calendar-box normal-bg">
+                                        <div class="calandar-event-name">
+                                            <h4>History</h4>
+                                            <h5>Lorem ipsum sit amet</h5>
+                                        </div>
+                                        <span>11:30 - 12:00 am</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+</div>
+@endsection
