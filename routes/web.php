@@ -1,257 +1,173 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\UserManagementController;
-use App\Http\Controllers\GradeController;
-use App\Http\Controllers\GraduateController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\LibraryController;
-use App\Http\Controllers\FinancialController;
-use App\Http\Controllers\CommunicationController;
-use App\Http\Controllers\TimetableController;
-use App\Http\Controllers\ExaminationController;
 
-// Authentication Routes
-Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return redirect()->route('login');
-    });
-    
-    Route::get('/login', function () {
-        return view('auth.login');
-    })->name('login');
-    
-    Route::post('/login', function (Request $request) {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended('dashboard');
-        }
+/** for side bar menu active */
+function set_active( $route ) {
+    if( is_array( $route ) ){
+        return in_array(Request::path(), $route) ? 'active' : '';
+    }
+    return Request::path() == $route ? 'active' : '';
+}
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
-    });
-    
-    Route::get('/register', function () {
-        return view('auth.register');
-    })->name('register');
-    
-    Route::post('/register', function (Request $request) {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+Route::get('/', function () {
+    return view('auth.login');
+});
 
-        $user = \App\Models\User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        Auth::login($user);
-        return redirect()->route('dashboard');
+Route::group(['middleware'=>'auth'], function () {
+    Route::get('home', function () {
+        return view('home');
     });
 });
 
-// Protected Routes
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-    
-    // Student Routes
-    Route::resource('students', StudentController::class);
-    Route::get('/students/count', [StudentController::class, 'count'])->name('students.count');
-    Route::get('/students/grid', [StudentController::class, 'grid'])->name('students.grid');
-    
-    // Teacher Routes
-    Route::resource('teachers', TeacherController::class);
-    Route::get('/teachers/grid', [TeacherController::class, 'grid'])->name('teachers.grid');
-    
-    // Department Routes
-    Route::resource('departments', DepartmentController::class);
-    
-    // Course Routes
-    Route::resource('courses', CourseController::class);
-    
-    // Subject Routes
-    Route::resource('subjects', SubjectController::class);
-    
-    // Event Routes
-    Route::resource('events', EventController::class);
-    Route::get('/events/calendar', [EventController::class, 'calendar'])->name('events.calendar');
-    
-    // User Management Routes
-    Route::resource('usermanagement', UserManagementController::class);
-    Route::post('/usermanagement/{id}/change-password', [UserManagementController::class, 'changePassword'])->name('usermanagement.change-password');
-    Route::post('/usermanagement/{id}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('usermanagement.toggle-status');
-    
-    // Grade Routes
-    Route::resource('grades', GradeController::class);
-    Route::get('/grades/transcript/{student_id}', [GradeController::class, 'transcript'])->name('grades.transcript');
-    
-    // Graduate Routes
-    Route::resource('graduates', GraduateController::class);
-    Route::get('/graduates/grid', [GraduateController::class, 'grid'])->name('graduates.grid');
-    Route::get('/graduates/alumni', [GraduateController::class, 'alumni'])->name('graduates.alumni');
-    Route::get('/graduates/statistics', [GraduateController::class, 'statistics'])->name('graduates.statistics');
-    
-    // Settings Routes
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::get('/settings/general', [SettingController::class, 'general'])->name('settings.general');
-    Route::post('/settings/general', [SettingController::class, 'updateGeneral'])->name('settings.general.update');
-    Route::get('/settings/academic', [SettingController::class, 'academic'])->name('settings.academic');
-    Route::post('/settings/academic', [SettingController::class, 'updateAcademic'])->name('settings.academic.update');
-    Route::get('/settings/email', [SettingController::class, 'email'])->name('settings.email');
-    Route::post('/settings/email', [SettingController::class, 'updateEmail'])->name('settings.email.update');
-    Route::get('/settings/system', [SettingController::class, 'system'])->name('settings.system');
-    Route::post('/settings/system', [SettingController::class, 'updateSystem'])->name('settings.system.update');
-    Route::get('/settings/backup', [SettingController::class, 'backup'])->name('settings.backup');
-    Route::post('/settings/restore', [SettingController::class, 'restore'])->name('settings.restore');
-    
-    // Report Routes
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-    Route::get('/reports/students', [ReportController::class, 'students'])->name('reports.students');
-    Route::get('/reports/teachers', [ReportController::class, 'teachers'])->name('reports.teachers');
-    Route::get('/reports/academic', [ReportController::class, 'academic'])->name('reports.academic');
-    Route::get('/reports/financial', [ReportController::class, 'financial'])->name('reports.financial');
-    Route::get('/reports/attendance', [ReportController::class, 'attendance'])->name('reports.attendance');
-    Route::get('/reports/graduates', [ReportController::class, 'graduates'])->name('reports.graduates');
-    Route::get('/reports/export', [ReportController::class, 'export'])->name('reports.export');
-    
-    // Attendance Routes
-    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-    Route::get('/attendance/take', [AttendanceController::class, 'take'])->name('attendance.take');
-    Route::post('/attendance/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.get-students');
-    Route::post('/attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
-    Route::get('/attendance/view', [AttendanceController::class, 'view'])->name('attendance.view');
-    Route::get('/attendance/{id}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
-    Route::put('/attendance/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
-    Route::delete('/attendance/{id}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
-    Route::get('/attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
-    Route::get('/attendance/export', [AttendanceController::class, 'export'])->name('attendance.export');
-    
-    // Library Routes
-    Route::get('/library', [LibraryController::class, 'index'])->name('library.index');
-    Route::get('/library/books', [LibraryController::class, 'books'])->name('library.books');
-    Route::get('/library/books/create', [LibraryController::class, 'create'])->name('library.create');
-    Route::post('/library/books', [LibraryController::class, 'store'])->name('library.store');
-    Route::get('/library/books/{id}/edit', [LibraryController::class, 'edit'])->name('library.edit');
-    Route::put('/library/books/{id}', [LibraryController::class, 'update'])->name('library.update');
-    Route::delete('/library/books/{id}', [LibraryController::class, 'destroy'])->name('library.destroy');
-    Route::get('/library/borrow', [LibraryController::class, 'borrow'])->name('library.borrow');
-    Route::post('/library/borrow', [LibraryController::class, 'processBorrow'])->name('library.process-borrow');
-    Route::get('/library/return/{id}', [LibraryController::class, 'return'])->name('library.return');
-    Route::put('/library/return/{id}', [LibraryController::class, 'processReturn'])->name('library.process-return');
-    Route::get('/library/borrowings', [LibraryController::class, 'borrowings'])->name('library.borrowings');
-    Route::get('/library/categories', [LibraryController::class, 'categories'])->name('library.categories');
-    Route::post('/library/categories', [LibraryController::class, 'storeCategory'])->name('library.store-category');
-    Route::get('/library/reports', [LibraryController::class, 'reports'])->name('library.reports');
-    Route::get('/library/export', [LibraryController::class, 'export'])->name('library.export');
-    
-    // Financial Routes
-    Route::get('/financial', [FinancialController::class, 'index'])->name('financial.index');
-    Route::get('/financial/fees', [FinancialController::class, 'fees'])->name('financial.fees');
-    Route::get('/financial/fees/create', [FinancialController::class, 'createFee'])->name('financial.create-fee');
-    Route::post('/financial/fees', [FinancialController::class, 'storeFee'])->name('financial.store-fee');
-    Route::get('/financial/fees/{id}/edit', [FinancialController::class, 'editFee'])->name('financial.edit-fee');
-    Route::put('/financial/fees/{id}', [FinancialController::class, 'updateFee'])->name('financial.update-fee');
-    Route::delete('/financial/fees/{id}', [FinancialController::class, 'destroyFee'])->name('financial.destroy-fee');
-    Route::get('/financial/payments', [FinancialController::class, 'payments'])->name('financial.payments');
-    Route::get('/financial/payments/record', [FinancialController::class, 'recordPayment'])->name('financial.record-payment');
-    Route::post('/financial/payments', [FinancialController::class, 'storePayment'])->name('financial.store-payment');
-    Route::get('/financial/scholarships', [FinancialController::class, 'scholarships'])->name('financial.scholarships');
-    Route::get('/financial/scholarships/create', [FinancialController::class, 'createScholarship'])->name('financial.create-scholarship');
-    Route::post('/financial/scholarships', [FinancialController::class, 'storeScholarship'])->name('financial.store-scholarship');
-    Route::get('/financial/categories', [FinancialController::class, 'categories'])->name('financial.categories');
-    Route::post('/financial/categories', [FinancialController::class, 'storeCategory'])->name('financial.store-category');
-    Route::get('/financial/reports', [FinancialController::class, 'reports'])->name('financial.reports');
-    Route::get('/financial/export', [FinancialController::class, 'export'])->name('financial.export');
-    
-    // Communication Routes
-    Route::get('/communication', [CommunicationController::class, 'index'])->name('communication.index');
-    Route::get('/communication/messages', [CommunicationController::class, 'messages'])->name('communication.messages');
-    Route::get('/communication/compose', [CommunicationController::class, 'compose'])->name('communication.compose');
-    Route::post('/communication/send', [CommunicationController::class, 'sendMessage'])->name('communication.send-message');
-    Route::get('/communication/message/{id}', [CommunicationController::class, 'viewMessage'])->name('communication.view-message');
-    Route::post('/communication/reply/{id}', [CommunicationController::class, 'reply'])->name('communication.reply');
-    Route::delete('/communication/message/{id}', [CommunicationController::class, 'deleteMessage'])->name('communication.delete-message');
-    Route::get('/communication/announcements', [CommunicationController::class, 'announcements'])->name('communication.announcements');
-    Route::get('/communication/announcements/create', [CommunicationController::class, 'createAnnouncement'])->name('communication.create-announcement');
-    Route::post('/communication/announcements', [CommunicationController::class, 'storeAnnouncement'])->name('communication.store-announcement');
-    Route::get('/communication/announcements/{id}/edit', [CommunicationController::class, 'editAnnouncement'])->name('communication.edit-announcement');
-    Route::put('/communication/announcements/{id}', [CommunicationController::class, 'updateAnnouncement'])->name('communication.update-announcement');
-    Route::delete('/communication/announcements/{id}', [CommunicationController::class, 'deleteAnnouncement'])->name('communication.delete-announcement');
-    Route::get('/communication/notifications', [CommunicationController::class, 'notifications'])->name('communication.notifications');
-    Route::post('/communication/notifications/{id}/read', [CommunicationController::class, 'markAsRead'])->name('communication.mark-as-read');
-    Route::post('/communication/notifications/read-all', [CommunicationController::class, 'markAllAsRead'])->name('communication.mark-all-read');
-    Route::get('/communication/reports', [CommunicationController::class, 'reports'])->name('communication.reports');
-    Route::get('/communication/export', [CommunicationController::class, 'export'])->name('communication.export');
-    
-    // Timetable Routes
-    Route::get('/timetable', [TimetableController::class, 'index'])->name('timetable.index');
-    Route::get('/timetable/timetables', [TimetableController::class, 'timetables'])->name('timetable.timetables');
-    Route::get('/timetable/create', [TimetableController::class, 'create'])->name('timetable.create');
-    Route::post('/timetable', [TimetableController::class, 'store'])->name('timetable.store');
-    Route::get('/timetable/{id}/edit', [TimetableController::class, 'edit'])->name('timetable.edit');
-    Route::put('/timetable/{id}', [TimetableController::class, 'update'])->name('timetable.update');
-    Route::delete('/timetable/{id}', [TimetableController::class, 'destroy'])->name('timetable.destroy');
-    Route::get('/timetable/{id}/view', [TimetableController::class, 'view'])->name('timetable.view');
-    Route::get('/timetable/weekly', [TimetableController::class, 'weekly'])->name('timetable.weekly');
-    Route::get('/timetable/teacher/{teacherId?}', [TimetableController::class, 'teacherTimetable'])->name('timetable.teacher');
-    Route::get('/timetable/student/{studentId?}', [TimetableController::class, 'studentTimetable'])->name('timetable.student');
-    Route::get('/timetable/classrooms', [TimetableController::class, 'classrooms'])->name('timetable.classrooms');
-    Route::post('/timetable/classrooms', [TimetableController::class, 'storeClassroom'])->name('timetable.store-classroom');
-    Route::get('/timetable/reports', [TimetableController::class, 'reports'])->name('timetable.reports');
-    Route::get('/timetable/export', [TimetableController::class, 'export'])->name('timetable.export');
-    
-    // Examination Routes
-    Route::get('/examination', [ExaminationController::class, 'index'])->name('examination.index');
-    Route::get('/examination/examinations', [ExaminationController::class, 'examinations'])->name('examination.examinations');
-    Route::get('/examination/create', [ExaminationController::class, 'create'])->name('examination.create');
-    Route::post('/examination', [ExaminationController::class, 'store'])->name('examination.store');
-    Route::get('/examination/{id}/edit', [ExaminationController::class, 'edit'])->name('examination.edit');
-    Route::put('/examination/{id}', [ExaminationController::class, 'update'])->name('examination.update');
-    Route::delete('/examination/{id}', [ExaminationController::class, 'destroy'])->name('examination.destroy');
-    Route::get('/examination/{id}/view', [ExaminationController::class, 'view'])->name('examination.view');
-    Route::get('/examination/schedules', [ExaminationController::class, 'schedules'])->name('examination.schedules');
-    Route::get('/examination/schedules/create', [ExaminationController::class, 'createSchedule'])->name('examination.create-schedule');
-    Route::post('/examination/schedules', [ExaminationController::class, 'storeSchedule'])->name('examination.store-schedule');
-    Route::get('/examination/results', [ExaminationController::class, 'results'])->name('examination.results');
-    Route::get('/examination/results/create', [ExaminationController::class, 'createResult'])->name('examination.create-result');
-    Route::post('/examination/results', [ExaminationController::class, 'storeResult'])->name('examination.store-result');
-    Route::get('/examination/results/{id}/edit', [ExaminationController::class, 'editResult'])->name('examination.edit-result');
-    Route::put('/examination/results/{id}', [ExaminationController::class, 'updateResult'])->name('examination.update-result');
-    Route::delete('/examination/results/{id}', [ExaminationController::class, 'deleteResult'])->name('examination.delete-result');
-    Route::get('/examination/student-results/{studentId?}', [ExaminationController::class, 'studentResults'])->name('examination.student-results');
-    Route::get('/examination/reports', [ExaminationController::class, 'reports'])->name('examination.reports');
-    Route::get('/examination/export', [ExaminationController::class, 'export'])->name('examination.export');
-    
-    Route::post('/logout', function (Request $request) {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('login');
-    })->name('logout');
+Auth::routes();
+Route::group(['namespace' => 'App\Http\Controllers\Auth'],function()
+{
+    // ----------------------------login ------------------------------//
+    Route::controller(LoginController::class)->group(function () {
+        Route::get('/login', 'login')->name('login');
+        Route::post('/login', 'authenticate');
+        Route::get('/logout', 'logout')->name('logout');
+        Route::post('change/password', 'changePassword')->name('change/password');
+    });
+
+    Route::controller(ForgotPasswordController::class)->group(function () {
+        Route::get('password/reset', 'showLinkRequestForm')->name('password.request');
+        Route::post('password/email', 'sendResetLinkEmail')->name('password.email');
+    });
+
+    Route::controller(ResetPasswordController::class)->group(function () {
+        Route::get('password/reset/{token}', 'showResetForm')->name('password.reset');
+        Route::post('password/reset', 'reset')->name('password.update');
+    });
+
+    // ----------------------------- register -------------------------//
+    Route::controller(RegisterController::class)->group(function () {
+        Route::get('/register', 'register')->name('register');
+        Route::post('/register','storeUser')->name('register');
+    });
+
 });
 
-// Default fallback
-Route::fallback(function () {
-    return redirect()->route('login');
+Route::group(['namespace' => 'App\Http\Controllers\Dashboard'],function()
+{
+    Route::controller(HomeController::class)->group(function () {
+        // Main dashboard routes
+        Route::get('/home', 'index')->middleware('auth')->name('home');
+        Route::get('user/profile/page', 'userProfile')->middleware('auth')->name('user/profile/page');
+        Route::get('/dashboard/superadmin/index', 'SuperAdminController@dashboard')->name('dashboard.superadmin');
+        Route::get('/dashboard/admin/index', 'AdminController@dashboard')->name('dashboard.admin');
+        // Add more routes for other roles as needed
+        });
+});
+
+// Department Manager routes with middleware
+Route::group(['middleware' => ['auth', 'department.manager']], function () {
+    Route::get('/dashboard/departmentmanager/index', 'App\Http\Controllers\Dashboard\DepartmentManagerController@dashboard')->name('dashboard.departmentmanager');
+    // Add more routes for the department manager as needed
+});
+
+Route::group(['namespace' => 'App\Http\Controllers'],function()
+{
+    // ----------------------------- user controller ---------------------//
+    Route::controller(UserManagementController::class)->group(function () {
+        Route::get('list/users', 'index')->middleware('auth')->name('list/users');
+        Route::post('change/password', 'changePassword')->name('change/password');
+        Route::get('view/user/edit/{id}', 'userView')->middleware('auth');
+        Route::post('user/update', 'userUpdate')->name('user/update');
+        Route::post('user/delete', 'userDelete')->name('user/delete');
+        Route::get('user/add', 'registerUser')->name('add/users');
+        Route::post('user/add','storeNewUser')->name('add/users');
+        Route::get('get-users-data', 'getUsersData')->name('get-users-data'); /** get all data users */
+        Route::get('notifications/view', 'UserManagementController@viewNotifications')->name('notifications.view');
+    });
+
+    // ------------------------ setting -------------------------------//
+    Route::controller(Setting::class)->group(function () {
+        Route::get('setting/page', 'index')->middleware('auth')->name('setting/page');
+    });
+
+    // student routes
+    Route::middleware(['auth'])->group(function () {
+        Route::get('student/list', 'StudentController@student')->name('student/list');
+        Route::get('student/grid', 'StudentController@studentGrid')->name('student/grid');
+        Route::get('student/graduates', 'StudentController@graduatedStudent')->name('student/graduates');
+        Route::get('student/add/page', 'StudentController@studentAdd')->name('student/add/page');
+        Route::post('student/add/save', 'StudentController@studentSave')->name('student/add/save');
+        Route::get('student/edit/{id}', 'StudentController@studentEdit')->name('student/edit');
+        Route::post('student/update', 'StudentController@studentUpdate')->name('student/update');
+        Route::post('student/delete', 'StudentController@studentDelete')->name('student/delete');
+        Route::get('student/profile/{id}', 'StudentController@studentProfile')->name('student/profile');
+        Route::get('student/grades/{id}', 'StudentController@studentGrades')->name('student/grades');
+        Route::get('get-students-data', 'StudentController@getStudentsData')->name('get-students-data');
+    });
+
+    // ------------------------ teacher -------------------------------//
+    Route::controller(TeacherController::class)->group(function () {
+        Route::get('teacher/add/page', 'teacherAdd')->middleware('auth')->name('teacher/add/page'); // page teacher
+        Route::get('teacher/list/page', 'teacherList')->middleware('auth')->name('teacher/list/page'); // page teacher
+        Route::get('teacher/grid/page', 'teacherGrid')->middleware('auth')->name('teacher/grid/page'); // page grid teacher
+        Route::post('teacher/save', 'saveRecord')->middleware('auth')->name('teacher/save'); // save record
+        Route::get('teacher/edit/{user_id}', 'editRecord'); // view teacher record
+        Route::post('teacher/update', 'updateRecordTeacher')->middleware('auth')->name('teacher/update'); // update record
+        Route::post('teacher/delete', 'teacherDelete')->name('teacher/delete'); // delete record teacher
+    });
+
+    // ----------------------- department -----------------------------//
+    Route::controller(DepartmentController::class)->group(function () {
+        Route::get('department/list/page', 'departmentList')->middleware('auth')->name('department/list/page'); // department/list/page
+        Route::get('department/add/page', 'indexDepartment')->middleware('auth')->name('department/add/page'); // page add department
+        Route::get('department/edit/{department_id}', 'editDepartment'); // page add department
+        Route::post('department/save', 'saveRecord')->middleware('auth')->name('department/save'); // department/save
+        Route::post('department/update', 'updateRecord')->middleware('auth')->name('department/update'); // department/update
+        Route::post('department/delete', 'deleteRecord')->middleware('auth')->name('department/delete'); // department/delete
+        Route::get('department/profile/{id}', 'departmentProfile')->name('deparmtent/profile');
+        Route::get('get-data-list', 'getDataList')->name('get-data-list'); // get data list
+        Route::get('departments/download', 'DepartmentController@exportToExcel')->name('departments.download');
+
+
+    });
+
+    // ----------------------- subject -----------------------------//
+    Route::controller(SubjectController::class)->group(function () {
+        Route::get('subject/list/page', 'subjectList')->middleware('auth')->name('subject/list/page'); // subject/list/page
+        Route::get('subject/add/page', 'subjectAdd')->middleware('auth')->name('subject/add/page'); // subject/add/page
+        Route::post('subject/save', 'saveRecord')->name('subject/save'); // subject/save
+        Route::post('subject/update', 'updateRecord')->name('subject/update'); // subject/update
+        Route::post('subject/delete', 'deleteRecord')->name('subject/delete'); // subject/delete
+        Route::get('subject/edit/{subject_id}', 'subjectEdit'); // subject/edit/page
+    });
+
+    // ----------------------- subject -----------------------------//
+    Route::controller(CourseController::class)->group(function () {
+        Route::get('course/list/page', 'courseList')->middleware('auth')->name('course/list/page'); // subject/list/page
+        Route::get('course/add/page', 'courseAdd')->middleware('auth')->name('course/add/page'); // subject/add/page
+        Route::post('course/save', 'saveRecord')->name('course/save'); // subject/save
+        Route::post('course/update', 'updateRecord')->name('course/update'); // subject/update
+        Route::post('course/delete', 'deleteRecord')->name('course/delete'); // subject/delete
+        Route::get('course/edit/{course_code}', 'courseEdit'); // subject/edit/page
+    });
+
+        // ------------------------ graduated students -------------------------------//
+        Route::controller(StudentController::class)->group(function () {
+            Route::get('graduated-student/list', 'graduatedStudent')->middleware('auth')->name('graduated-student/list'); // list student
+            Route::get('graduated-student/grid', 'graduatedStudentGrid')->middleware('auth')->name('graduated-student/grid'); // grid student
+            Route::get('graduated-student/add/page', 'graduatedStudentAdd')->middleware('auth')->name('graduated-student/add/page'); // page student
+            Route::post('graduated-student/add/save', 'graduatedStudentSave')->name('graduated-student/add/save'); // save record student
+            Route::get('graduated-student/edit/{id}', 'graduatedStudentEdit'); // view for edit
+            Route::post('graduated-student/update', 'graduatedStudentUpdate')->name('graduated-student/update'); // update record student
+            Route::post('graduated-student/delete', 'graduatedStudentDelete')->name('graduated-student/delete'); // delete record student
+            Route::get('graduated-student/profile/{id}', 'graduatedStudentProfile')->middleware('auth'); // profile student
+        });
 });
