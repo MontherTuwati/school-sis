@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class UserSeeder extends Seeder
 {
@@ -12,6 +15,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $todayDate = Carbon::now();
+
         // Create a sample super admin user
         DB::table('users')->insert([
             'name' => 'Super Admin',
