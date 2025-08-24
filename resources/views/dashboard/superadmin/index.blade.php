@@ -3,6 +3,290 @@
 @section('content')
 {{-- message --}}
 {!! Toastr::message() !!}
+
+<style>
+    /* Modern Dashboard Styling */
+    .page-wrapper {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+    
+    .content.container-fluid {
+        padding: 2rem;
+    }
+    
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .page-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .breadcrumb-item a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item.active {
+        color: white;
+    }
+    
+    /* Stats Cards */
+    .card.bg-comman {
+        background: white;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    
+    .card.bg-comman:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card.bg-comman:nth-child(1) {
+        border-left: 4px solid #667eea;
+    }
+    
+    .card.bg-comman:nth-child(2) {
+        border-left: 4px solid #28a745;
+    }
+    
+    .card.bg-comman:nth-child(3) {
+        border-left: 4px solid #ffc107;
+    }
+    
+    .db-widgets {
+        padding: 1.5rem;
+    }
+    
+    .db-info h6 {
+        color: #6c757d;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .db-info h3 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 0;
+        color: #343a40;
+    }
+    
+    .db-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+    }
+    
+    .db-icon.students {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .db-icon.graduates {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+    
+    .db-icon.departments {
+        background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    }
+    
+    /* Chart Cards */
+    .card.card-chart {
+        background: white;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-bottom: 1px solid #dee2e6;
+        padding: 1.5rem;
+    }
+    
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #343a40;
+        margin: 0;
+    }
+    
+    .chart-list-out {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .chart-list-out li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    
+    .circle-blue {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #667eea;
+    }
+    
+    .circle-green {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #28a745;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    /* Calendar Widget */
+    .card.comman-shadow {
+        background: white;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        height: fit-content;
+    }
+    
+    .calendar-container {
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .up-come-header {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 1rem;
+    }
+    
+    .up-come-header h2 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #343a40;
+        margin: 0;
+    }
+    
+    .up-come-header span a {
+        color: #667eea;
+        text-decoration: none;
+        font-size: 1.1rem;
+    }
+    
+    .upcome-event-date {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: #f8f9fa;
+        margin: 0 1rem;
+        border-radius: 8px;
+    }
+    
+    .upcome-event-date h3 {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #343a40;
+        margin: 0;
+    }
+    
+    .calendar-details {
+        padding: 1rem;
+        border-bottom: 1px solid #f1f3f4;
+    }
+    
+    .calendar-details p {
+        font-size: 0.9rem;
+        color: #667eea;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    
+    .calendar-box {
+        padding: 1rem;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+    }
+    
+    .calendar-box.normal-bg {
+        background: #f8f9fa;
+    }
+    
+    .calendar-box.break-bg {
+        background: #fff3cd;
+        border-left-color: #ffc107;
+    }
+    
+    .calandar-event-name h4 {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #343a40;
+        margin: 0 0 0.25rem 0;
+    }
+    
+    .calandar-event-name h5 {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin: 0 0 0.5rem 0;
+    }
+    
+    .calendar-box span {
+        font-size: 0.8rem;
+        color: #667eea;
+        font-weight: 500;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .content.container-fluid {
+            padding: 1rem;
+        }
+        
+        .page-header {
+            padding: 1.5rem;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
 <div class="page-wrapper">
     <div class="content container-fluid">
         <div class="page-header">
@@ -28,8 +312,8 @@
                                 <h6>Students</h6>
                                 <h3>50+</h3>
                             </div>
-                            <div class="db-icon">
-                                <img src="{{ URL::to('assets/img/icons/dash-icon-01.svg') }}" alt="Dashboard Icon">
+                            <div class="db-icon students">
+                                <i class="fas fa-users"></i>
                             </div>
                         </div>
                     </div>
@@ -43,8 +327,8 @@
                                 <h6>Graduates</h6>
                                 <h3>50+</h3>
                             </div>
-                            <div class="db-icon">
-                                <img src="{{ URL::to('assets/img/icons/dash-icon-02.svg') }}" alt="Dashboard Icon">
+                            <div class="db-icon graduates">
+                                <i class="fas fa-user-graduate"></i>
                             </div>
                         </div>
                     </div>
@@ -58,8 +342,8 @@
                                 <h6>Department</h6>
                                 <h3>23</h3>
                             </div>
-                            <div class="db-icon">
-                                <img src="{{ URL::to('assets/img/icons/dash-icon-03.svg') }}" alt="Dashboard Icon">
+                            <div class="db-icon departments">
+                                <i class="fas fa-building"></i>
                             </div>
                         </div>
                     </div>
