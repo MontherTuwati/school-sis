@@ -16,9 +16,16 @@ class DepartmentSeeder extends Seeder
     {
         // Sample data for departments
         $departments = [
-            ['name' => 'Department 1'],
-            ['name' => 'Department 2'],
-            // Add more departments as needed
+            ['department_name' => 'Computer Science'],
+            ['department_name' => 'Mathematics'],
+            ['department_name' => 'Physics'],
+            ['department_name' => 'Chemistry'],
+            ['department_name' => 'Biology'],
+            ['department_name' => 'Engineering'],
+            ['department_name' => 'Business Administration'],
+            ['department_name' => 'Economics'],
+            ['department_name' => 'Psychology'],
+            ['department_name' => 'English Literature'],
         ];
 
         // Insert data into the departments table
