@@ -15,8 +15,8 @@
                         <li><a href="{{ route('home') }}" class="{{set_active(['home'])}}">Admin Dashboard</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="exam.html"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
+                <li class="{{set_active(['exam/list'])}}">
+                    <a href="{{ route('exam.index') }}"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
                 </li>
                 <li>
                     <a href="event.html"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
