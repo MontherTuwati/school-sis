@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             ExamSeeder::class,
             ClassroomSeeder::class,
+            EventSeeder::class,
         ]);
     }
 }

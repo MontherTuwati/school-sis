@@ -40,5 +40,41 @@ class UserSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        // Create a sample department manager user
+        DB::table('users')->insert([
+            'name' => 'Department Manager',
+            'username' => "manager1",
+            'email' => 'departmentmanager@example.com',
+            'role' => 'Department Manager',
+            'password' => Hash::make('manager001'),
+            'join_date' => $todayDate,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Create a sample teacher user
+        DB::table('users')->insert([
+            'name' => 'Teacher',
+            'username' => "teacher1",
+            'email' => 'teacher@example.com',
+            'role' => 'Teacher',
+            'password' => Hash::make('teacher001'),
+            'join_date' => $todayDate,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Create a sample teacher user
+        DB::table('users')->insert([
+            'name' => 'Student',
+            'username' => "student1",
+            'email' => 'student@example.com',
+            'role' => 'Student',
+            'password' => Hash::make('student001'),
+            'join_date' => $todayDate,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }
