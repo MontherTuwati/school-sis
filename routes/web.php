@@ -98,6 +98,21 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('setting/page', 'index')->middleware('auth')->name('setting/page');
     });
 
+    // ------------------------ exam management -------------------------------//
+    Route::controller(ExamController::class)->group(function () {
+        Route::get('exam/list', 'index')->middleware('auth')->name('exam.index');
+        Route::get('exam/create', 'create')->middleware('auth')->name('exam.create');
+        Route::post('exam/store', 'store')->middleware('auth')->name('exam.store');
+        Route::get('exam/show/{id}', 'show')->middleware('auth')->name('exam.show');
+        Route::get('exam/edit/{id}', 'edit')->middleware('auth')->name('exam.edit');
+        Route::put('exam/update/{id}', 'update')->middleware('auth')->name('exam.update');
+        Route::delete('exam/delete/{id}', 'destroy')->middleware('auth')->name('exam.destroy');
+        Route::post('exam/toggle-status/{id}', 'toggleStatus')->middleware('auth')->name('exam.toggle-status');
+        Route::get('exam/by-course/{courseId}', 'getByCourse')->middleware('auth')->name('exam.by-course');
+        Route::get('exam/upcoming', 'upcoming')->middleware('auth')->name('exam.upcoming');
+        Route::get('exam/export', 'export')->middleware('auth')->name('exam.export');
+    });
+
     // student routes
     Route::middleware(['auth'])->group(function () {
         Route::get('student/list', 'StudentController@student')->name('student/list');
