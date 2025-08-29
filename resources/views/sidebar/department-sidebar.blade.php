@@ -19,8 +19,8 @@
                 <li class="{{set_active(['exam/list'])}}">
                     <a href="{{ route('exam.index') }}"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
                 </li>
-                <li>
-                    <a href="event.html"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
+                <li class="{{set_active(['event/list'])}}">
+                    <a href="{{ route('events.index') }}"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
                 </li>
                 <li>
                     <a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>
