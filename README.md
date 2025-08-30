@@ -8,8 +8,6 @@ School SIS is a modern, feature-rich student information system built with Larav
 
 ## 📸 Screenshots
 
-> **Note**: Screenshots are referenced below. Please add actual screenshots to the `screenshots/` directory. See `screenshots/README.md` for guidelines.
-
 ### 🏠 Dashboard
 ![Dashboard](screenshots/dashboard.png)
 *Main dashboard with statistics, charts, and quick access to all modules*
@@ -111,7 +109,7 @@ School SIS is a modern, feature-rich student information system built with Larav
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/MontherTuwati/school-sis.git
 cd school-sis
 ```
 
@@ -161,30 +159,9 @@ The application will be available at `http://localhost:8000`
 
 After running the seeders, you can log in with:
 
-- **Super Admin**: `admin@school.com` / `password`
-- **Department Manager**: `dept@school.com` / `password`
-- **Teacher**: `teacher@school.com` / `password`
-
-## 📁 Project Structure
-
-```
-school-sis/
-├── app/
-│   ├── Http/Controllers/     # Application controllers
-│   ├── Models/              # Eloquent models
-│   └── Providers/           # Service providers
-├── database/
-│   ├── migrations/          # Database migrations
-│   ├── seeders/            # Database seeders
-│   └── factories/          # Model factories
-├── resources/
-│   ├── views/              # Blade templates
-│   ├── css/                # Stylesheets
-│   └── js/                 # JavaScript files
-├── routes/
-│   └── web.php             # Web routes
-└── public/                 # Public assets
-```
+- **Super Admin**: `sadmin1` / `sadmin001`
+- **Admin**: `admin1` / `admin001`
+- **Department Manager**: `manager1` / `manager001`
 
 ## 🔧 Key Features Implementation
 
@@ -211,21 +188,6 @@ school-sis/
 - Indexed columns for performance
 - Soft deletes where appropriate
 - Audit trails for important operations
-
-## 📊 Database Schema
-
-The system includes the following main tables:
-- `users` - User accounts and authentication
-- `students` - Student information and profiles
-- `teachers` - Teacher information and assignments
-- `departments` - Department organization
-- `courses` - Course catalog and management
-- `subjects` - Subject information
-- `events` - Event management and scheduling
-- `grades` - Academic grade tracking
-- `graduates` - Alumni and graduation records
-- `enrollments` - Student course enrollments
-- `transcripts` - Academic transcript data
 
 ## 🔒 Security Features
 
@@ -261,15 +223,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For support and questions:
 - Create an issue in the repository
 - Contact the development team
-- Check the documentation in the `/docs` folder
-
-## 🔄 Version History
-
-- **v1.0.0** - Initial release with core features
-- **v1.1.0** - Added event management system
-- **v1.2.0** - Enhanced UI/UX and performance improvements
-- **v1.3.0** - Added comprehensive reporting and analytics
-
----
 
 **Built with ❤️ using Laravel 11**
