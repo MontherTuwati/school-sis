@@ -113,6 +113,22 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('exam/export', 'export')->middleware('auth')->name('exam.export');
     });
 
+    // ------------------------ event management -------------------------------//
+    Route::controller(EventController::class)->group(function () {
+        Route::get('event/list', 'index')->middleware('auth')->name('events.index');
+        Route::get('event/create', 'create')->middleware('auth')->name('events.create');
+        Route::post('event/store', 'store')->middleware('auth')->name('events.store');
+        Route::get('event/show/{id}', 'show')->middleware('auth')->name('events.show');
+        Route::get('event/edit/{id}', 'edit')->middleware('auth')->name('events.edit');
+        Route::put('event/update/{id}', 'update')->middleware('auth')->name('events.update');
+        Route::delete('event/delete/{id}', 'destroy')->middleware('auth')->name('events.destroy');
+        Route::post('event/toggle-status/{id}', 'toggleStatus')->middleware('auth')->name('events.toggle-status');
+        Route::get('event/upcoming', 'upcoming')->middleware('auth')->name('events.upcoming');
+        Route::get('event/by-type/{type}', 'byType')->middleware('auth')->name('events.by-type');
+        Route::get('event/by-priority/{priority}', 'byPriority')->middleware('auth')->name('events.by-priority');
+        Route::get('event/export', 'export')->middleware('auth')->name('events.export');
+    });
+
     // student routes
     Route::middleware(['auth'])->group(function () {
         Route::get('student/list', 'StudentController@student')->name('student/list');
