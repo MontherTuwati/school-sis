@@ -21,13 +21,19 @@
 	<link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
 	<script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
 	<script src="{{ URL::to('assets/js/toastr.min.js') }}"></script>
+	<style>
+		.header .header-left .logo img {
+			max-height: 100px !important;
+			width: auto;
+		}
+	</style>
 </head>
 <body>
     <div class="main-wrapper">
         <div class="header">
             <div class="header-left">
                 <a href="{{ route('home') }}" class="logo">
-                    <img src="{{ URL::to('assets/img/logo.png') }}" alt="Logo">
+                    <img src="{{ URL::to('assets/img/logo.svg') }}" alt="Logo">
                 </a>
                 <a href="{{ route('home') }}" class="logo logo-small">
                     <img src="{{ URL::to('assets/img/logo-small.png') }}" alt="Logo" width="30" height="30">
