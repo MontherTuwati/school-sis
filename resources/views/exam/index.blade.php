@@ -6,7 +6,7 @@
 <style>
     /* Exam List Styling */
     .page-wrapper {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        background: #f5f7fa;
         min-height: 100vh;
     }
     
@@ -15,12 +15,11 @@
     }
     
     .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 2rem;
-        border-radius: 15px;
-        margin-bottom: 2rem;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .page-title {
@@ -94,7 +93,7 @@
     }
     
     .card-header {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        background: #f8f9fa;
         border-bottom: 1px solid #dee2e6;
         padding: 1.5rem;
     }
@@ -107,7 +106,7 @@
     }
     
     .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #667eea;
         border: none;
         border-radius: 10px;
         padding: 0.5rem 1rem;
@@ -171,22 +170,22 @@
     }
     
     .badge-upcoming {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        background: #28a745;
         color: white;
     }
     
     .badge-today {
-        background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+        background: #ffc107;
         color: white;
     }
     
     .badge-completed {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        background: #6c757d;
         color: white;
     }
     
     .badge-inactive {
-        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        background: #dc3545;
         color: white;
     }
     
@@ -199,25 +198,25 @@
     }
     
     .btn-view {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        background: #28a745;
         color: white;
         border: none;
     }
     
     .btn-edit {
-        background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+        background: #ffc107;
         color: white;
         border: none;
     }
     
     .btn-delete {
-        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        background: #dc3545;
         color: white;
         border: none;
     }
     
     .btn-toggle {
-        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        background: #17a2b8;
         color: white;
         border: none;
     }
@@ -287,7 +286,7 @@
                             <h3>{{ $stats['total'] }}</h3>
                             <p>Total Exams</p>
                         </div>
-                        <div class="stats-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="stats-icon" style="background: #667eea;">
                             <i class="fas fa-clipboard-list"></i>
                         </div>
                     </div>
@@ -301,7 +300,7 @@
                             <h3>{{ $stats['upcoming'] }}</h3>
                             <p>Upcoming</p>
                         </div>
-                        <div class="stats-icon" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                        <div class="stats-icon" style="background: #28a745;">
                             <i class="fas fa-calendar-plus"></i>
                         </div>
                     </div>
@@ -315,7 +314,7 @@
                             <h3>{{ $stats['completed'] }}</h3>
                             <p>Completed</p>
                         </div>
-                        <div class="stats-icon" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%);">
+                        <div class="stats-icon" style="background: #6c757d;">
                             <i class="fas fa-check-circle"></i>
                         </div>
                     </div>
@@ -329,7 +328,7 @@
                             <h3>{{ $stats['today'] }}</h3>
                             <p>Today</p>
                         </div>
-                        <div class="stats-icon" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);">
+                        <div class="stats-icon" style="background: #ffc107;">
                             <i class="fas fa-calendar-day"></i>
                         </div>
                     </div>
