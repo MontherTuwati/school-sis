@@ -16,12 +16,11 @@
     }
     
     .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 2rem;
-        border-radius: 15px;
-        margin-bottom: 2rem;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .page-title {
@@ -42,7 +41,7 @@
     }
     
     .breadcrumb-item.active {
-        color: white;
+        color: #667eea;
     }
     
     /* Stats Cards */
@@ -60,15 +59,15 @@
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     }
     
-    .card.bg-comman:nth-child(1) {
+    .card.bg-comman.card-students {
         border-left: 4px solid #667eea;
     }
     
-    .card.bg-comman:nth-child(2) {
+    .card.bg-comman.card-graduates {
         border-left: 4px solid #28a745;
     }
     
-    .card.bg-comman:nth-child(3) {
+    .card.bg-comman.card-departments {
         border-left: 4px solid #ffc107;
     }
     
@@ -104,15 +103,15 @@
     }
     
     .db-icon.students {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #667eea;
     }
     
     .db-icon.graduates {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        background: #28a745;
     }
     
     .db-icon.departments {
-        background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+        background: #ffc107;
     }
     
     /* Chart Cards */
@@ -305,7 +304,7 @@
 
         <div class="row">
             <div class="col-xl-4 col-sm-6 col-12 d-flex">
-                <div class="card bg-comman w-100">
+                <div class="card bg-comman w-100 card-students">
                     <div class="card-body">
                         <div class="db-widgets d-flex justify-content-between align-items-center">
                             <div class="db-info">
@@ -320,7 +319,7 @@
                 </div>
             </div>
             <div class="col-xl-4 col-sm-6 col-12 d-flex">
-                <div class="card bg-comman w-100">
+                <div class="card bg-comman w-100 card-graduates">
                     <div class="card-body">
                         <div class="db-widgets d-flex justify-content-between align-items-center">
                             <div class="db-info">
@@ -335,7 +334,7 @@
                 </div>
             </div>
             <div class="col-xl-4 col-sm-6 col-12 d-flex">
-                <div class="card bg-comman w-100">
+                <div class="card bg-comman w-100 card-departments">
                     <div class="card-body">
                         <div class="db-widgets d-flex justify-content-between align-items-center">
                             <div class="db-info">
