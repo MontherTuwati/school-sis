@@ -7,216 +7,349 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #1a1f3a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .login-container {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Left Section - Branding */
+        .branding-section {
+            flex: 1.4;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 4rem 5rem;
+            color: white;
+            position: relative;
+            overflow-y: auto;
+            min-width: 0;
+        }
+
+        .branding-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('{{ asset("images/Mask group.svg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.4;
+            filter: brightness(1.6) contrast(1.3);
+            z-index: 0;
+        }
+
+        .branding-section > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6rem;
+        }
+
+        .logo-image {
+            width: 120px;
+            height: 120px;
+            margin-right: 22px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .branding-content {
+            max-width: 600px;
+        }
+
+        .branding-heading {
+            font-size: 80px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 2.5rem;
+            letter-spacing: -1px;
+        }
+
+        .branding-subtext {
+            font-size: 28px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Right Section - Login Form */
+        .form-section {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 4rem;
+            background: #1a1f3a;
+            overflow-y: auto;
+            min-width: 0;
         }
-        .login-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            max-width: 400px;
+
+        .login-form-card {
             width: 100%;
+            max-width: 650px;
+            background: white;
+            border-radius: 12px;
+            padding: 5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
-        .login-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-        }
-        .login-body {
-            padding: 2rem;
-        }
+
         .form-group {
-            margin-bottom: 1.5rem;
-            position: relative;
+            margin-bottom: 3rem;
         }
+
         .form-label {
             font-weight: 500;
-            color: #495057;
-            margin-bottom: 0.5rem;
+            color: #333;
+            margin-bottom: 1.25rem;
             display: block;
+            font-size: 20px;
         }
-        .input-group {
-            position: relative;
-        }
-        .input-group-text {
-            background: #f8f9fa;
-            border: 1px solid #ced4da;
-            border-right: none;
-            color: #6c757d;
-        }
+
         .form-control {
-            border: 1px solid #ced4da;
-            border-left: none;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-        }
-        .form-control:focus {
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-            border-color: #667eea;
-        }
-        .btn-login {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 10px;
-            padding: 12px;
-            font-weight: 600;
             width: 100%;
-            margin-top: 1rem;
-            transition: all 0.3s ease;
+            padding: 22px 26px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 20px;
+            transition: all 0.2s;
+            background: white;
         }
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-        .alert {
-            border-radius: 10px;
+
+        .form-control::placeholder {
+            color: #999;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3.5rem;
+        }
+
+        .signup-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .signup-link:hover {
+            color: #667eea;
+        }
+
+        .btn-login {
+            background: #5b9bd5;
+            color: white;
             border: none;
+            border-radius: 8px;
+            padding: 22px 56px;
+            font-weight: 600;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .school-logo {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+
+        .btn-login:hover {
+            background: #4a8bc4;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(91, 155, 213, 0.3);
         }
-        .welcome-text {
-            font-size: 1.1rem;
-            opacity: 0.9;
+
+        .alert {
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 1.5rem;
         }
-        .password-toggle {
-            background: transparent;
-            border: 1px solid #ced4da;
-            border-left: none;
-            color: #6c757d;
+
+        .copyright {
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            z-index: 2;
         }
-        .password-toggle:hover {
-            background: #f8f9fa;
-            color: #495057;
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .login-container {
+                flex-direction: column;
+                overflow-y: auto;
+            }
+
+            .branding-section {
+                padding: 2rem;
+                min-height: 0;
+                flex-shrink: 0;
+            }
+
+            .branding-heading {
+                font-size: 36px;
+            }
+
+            .form-section {
+                padding: 2rem;
+                flex-shrink: 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .branding-heading {
+                font-size: 28px;
+            }
+
+            .branding-subtext {
+                font-size: 16px;
+            }
+
+            .login-form-card {
+                padding: 2rem;
+            }
+
+            .form-footer {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .btn-login {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <div class="login-card">
-                    <div class="login-header">
-                        <div class="school-logo">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <h4 class="mb-2">School SIS</h4>
-                        <p class="welcome-text mb-0">Welcome back! Please login to your account.</p>
-                    </div>
-                    
-                    <div class="login-body">
-                        @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                        @endif
-
-                        @if(session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                        @endif
-
-                        <form action="{{ route('login') }}" method="POST">
-                            @csrf
-                            
-                            <div class="form-group">
-                                <label for="username" class="form-label">Username</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-user"></i>
-                                    </span>
-                                    <input type="text" 
-                                           class="form-control @error('username') is-invalid @enderror" 
-                                           id="username"
-                                           name="username" 
-                                           placeholder="Enter your username"
-                                           value="{{ old('username') }}"
-                                           required>
-                                </div>
-                                @error('username')
-                                    <div class="invalid-feedback d-block">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password" class="form-label">Password</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-lock"></i>
-                                    </span>
-                                    <input type="password" 
-                                           class="form-control @error('password') is-invalid @enderror" 
-                                           id="password"
-                                           name="password" 
-                                           placeholder="Enter your password"
-                                           required>
-                                    <button class="btn password-toggle" type="button" id="togglePassword">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </div>
-                                @error('password')
-                                    <div class="invalid-feedback d-block">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                                    <label class="form-check-label" for="remember">
-                                        Remember me
-                                    </label>
-                                </div>
-                                <a href="#" class="text-decoration-none">Forgot Password?</a>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary btn-login">
-                                <i class="fas fa-sign-in-alt me-2"></i>Login
-                            </button>
-                        </form>
-
-                        <div class="text-center mt-4">
-                            <p class="mb-0">Don't have an account? 
-                                <a href="{{ route('register') }}" class="text-decoration-none">Sign Up</a>
-                            </p>
-                        </div>
+    <div class="main-wrapper">
+        <div class="login-container">
+            <!-- Left Section - Branding -->
+            <div class="branding-section">
+                <div>
+                <div class="logo-container">
+                    <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" class="logo-image">
+                    <span class="logo-text">School SIS</span>
+                </div>
+                <div class="branding-content">
+                    <h1 class="branding-heading">Login into your account</h1>
+                        <p class="branding-subtext">Welcome to our Student Information System!</p>
                     </div>
                 </div>
             </div>
+
+            <!-- Right Section - Login Form -->
+            <div class="form-section">
+                <div class="login-form-card">
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('login') }}" method="POST">
+                        @csrf
+                        
+                        <div class="form-group">
+                            <label for="username" class="form-label">Email</label>
+                            <input type="text" 
+                                   class="form-control @error('username') is-invalid @enderror" 
+                                   id="username"
+                                   name="username" 
+                                   placeholder="name@example.com"
+                                   value="{{ old('username') }}"
+                                   required>
+                            @error('username')
+                                <div class="invalid-feedback d-block">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" 
+                                   class="form-control @error('password') is-invalid @enderror" 
+                                   id="password"
+                                   name="password" 
+                                   placeholder="Your password"
+                                   required>
+                            @error('password')
+                                <div class="invalid-feedback d-block">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="form-footer">
+                            <a href="{{ route('register') }}" class="signup-link">Don't have an account? Sign up</a>
+                            <button type="submit" class="btn-login">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Monther Tuwati. All Rights Reserved.
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle password visibility
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const password = document.getElementById('password');
-            const icon = this.querySelector('i');
-            
-            if (password.type === 'password') {
-                password.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                password.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
-
         // Auto-hide alerts after 5 seconds
         setTimeout(function() {
             const alerts = document.querySelectorAll('.alert');
